@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Logic Gates</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="logicgates.css">
+    <script type="text/javascript" src="./d3.js"></script>
+    <script type="text/javascript" src="./gates.js"></script>
+    <script type="text/javascript">
+        var logic = {};
+        
+        function doload() {
+            var svg = d3.select("body").append("svg"),
+                w = 500,
+                h = 400,
+                t = 30,
+                l = 30,
+                styleString = "position: absolute; width: "+w+"px; height: "+h+"px;";
+                    
+            svg.attr("style", styleString);
+            
+            andGate(svg, 20, 20);
+            orGate(svg, 20, 100);
+            notGate(svg, 20, 180);
+            nandGate(svg, 20, 260);
+            
+        }
+        
+        logic.and = function(gate) {
+            if(gate.field0.property("value") === gate.field1.property("value") && gate.field0.property("value") != 0) {
+                gate.output.attr("stroke", "#090");
+                gate.fieldOut.property("value", 1);
+            } else {
+                gate.output.attr("stroke", "#000");
+                gate.fieldOut.property("value", 0);
+            }
+        }
+        
+        logic.nand = function(gate) {
+            if(gate.field0.property("value") == 0 && gate.field1.property("value") == 0)  {
+                gate.output.attr("stroke", "#090");
+                gate.fieldOut.property("value", 1);
+            } else {
+                gate.output.attr("stroke", "#000");
+                gate.fieldOut.property("value", 0);
+            }
+        }
+        
+        logic.or = function(gate) {
+            if(gate.field0.property("value") == 1 || gate.field1.property("value") == 1) {
+                gate.output.attr("stroke", "#090");
+                gate.fieldOut.property("value", 1);
+            } else {
+                gate.output.attr("stroke", "#000");
+                gate.fieldOut.property("value", 0);
+            }
+        }
+        
+        logic.not = function(gate) {
+            if(gate.field0.property("value") == 1) {
+                gate.output.attr("stroke", "#000");
+                gate.fieldOut.property("value", 0);
+            } else {
+                gate.output.attr("stroke", "#090");
+                gate.fieldOut.property("value", 1);
+            }
+        }
+        
+    </script>
+</head>
+
+<body onload="doload()">
+
+
+<script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38753899-1']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+  
+  </script>
+</body>
+</html>
