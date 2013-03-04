@@ -10,16 +10,47 @@
     <script type="text/javascript">
         var logic = {};
         
+        logic.and = function(gate) {
+            if(gate.input0.property("value") == gate.input1.property("value") && gate.input0.property("value") != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        logic.or = function(gate) {
+            if(gate.input0.property("value") == 1 || gate.input1.property("value") == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        logic.not = function(gate) {
+            if(gate.input0.property("value") == 1) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
+        logic.nand = function(gate) {
+            if(gate.input0.property("value") == 0 && gate.input1.property("value") == 0)  {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
         function doload() {
             var svg = d3.select("body").append("svg"),
-                w = 500,
+                w = 200,
                 h = 400,
                 t = 30,
                 l = 30,
                 styleString = "position: absolute; width: "+w+"px; height: "+h+"px;";
                     
             svg.attr("style", styleString);
-            
             andGate(svg, 20, 20);
             orGate(svg, 20, 100);
             notGate(svg, 20, 180);
@@ -27,64 +58,17 @@
             
         }
         
-        logic.and = function(gate) {
-            if(gate.field0.property("value") === gate.field1.property("value") && gate.field0.property("value") != 0) {
-                gate.output.attr("stroke", "#090");
-                gate.fieldOut.property("value", 1);
-            } else {
-                gate.output.attr("stroke", "#000");
-                gate.fieldOut.property("value", 0);
-            }
-        }
-        
-        logic.nand = function(gate) {
-            if(gate.field0.property("value") == 0 && gate.field1.property("value") == 0)  {
-                gate.output.attr("stroke", "#090");
-                gate.fieldOut.property("value", 1);
-            } else {
-                gate.output.attr("stroke", "#000");
-                gate.fieldOut.property("value", 0);
-            }
-        }
-        
-        logic.or = function(gate) {
-            if(gate.field0.property("value") == 1 || gate.field1.property("value") == 1) {
-                gate.output.attr("stroke", "#090");
-                gate.fieldOut.property("value", 1);
-            } else {
-                gate.output.attr("stroke", "#000");
-                gate.fieldOut.property("value", 0);
-            }
-        }
-        
-        logic.not = function(gate) {
-            if(gate.field0.property("value") == 1) {
-                gate.output.attr("stroke", "#000");
-                gate.fieldOut.property("value", 0);
-            } else {
-                gate.output.attr("stroke", "#090");
-                gate.fieldOut.property("value", 1);
-            }
-        }
         
     </script>
 </head>
 
 <body onload="doload()">
 
+<div style="position: absolute; top: 0px; left: 200px; width: 200px; height: auto;">
+    To the left are the four logic gates that we will make in today's tutorial. Their input fields are on the left and their output fields are
+     on the right. The input fields are editable and will change the state of the gate when you leave the field (in other words change the 1's and 0's and
+     then click the gate to change its state). When a wire is a binary 1 it will be green, and when it is a binary 0 it will be black.
+</div>
 
-<script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-38753899-1']);
-        _gaq.push(['_trackPageview']);
-      
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-  
-  </script>
 </body>
 </html>

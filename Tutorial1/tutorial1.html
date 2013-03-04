@@ -10,6 +10,19 @@
     <script type="text/javascript">
         var logic = {};
         
+        logic.and = function(gate) {
+            if(gate.input0.property("value") == gate.input1.property("value") && gate.input0.property("value") != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        /*
+         ***************************************
+         *Here is where your logic code will go*
+         ***************************************
+         */
+        
         function doload() {
             var svg = d3.select("body").append("svg"),
                 w = 500,
@@ -21,16 +34,11 @@
             svg.attr("style", styleString);
             
             andGate(svg, 20, 20);
-        }
-        
-        logic.and = function(gate) {
-            if(gate.field0.property("value") === gate.field1.property("value") && gate.field0.property("value") != 0) {
-                gate.output.attr("stroke", "#090");
-                gate.fieldOut.property("value", 1);
-            } else {
-                gate.output.attr("stroke", "#000");
-                gate.fieldOut.property("value", 0);
-            }
+            /*
+             ****************************
+             *Add additional gates here.*
+             ****************************
+             */
         }
         
         
@@ -40,18 +48,5 @@
 <body onload="doload()">
 
 
-<script type="text/javascript">
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-38753899-1']);
-        _gaq.push(['_trackPageview']);
-      
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-  
-  </script>
 </body>
 </html>

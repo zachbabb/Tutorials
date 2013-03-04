@@ -1,11 +1,11 @@
 /**
- *This file creates the graphics, and inputs for the logicgates used in Tutorial 1
- *I am using a library called d3 to draw the shapes and add the input fields for
+ *This file creates the graphics, and wires for the logicgates used in Tutorial 1
+ *I am using a library called d3 to draw the shapes and add the wire fields for
  *each gate. They all follow a similar structure, and usually you would have some helper
  *functions to reduce the amount of code that's repeated. For these tutorials though
  *I want, as much as possible, to not have to have you hunt through a bunch of function
- *calls to see what's going on. Each gate draws itself, then draws its input and output
- *"wires", and then adds the input and output text fields. 
+ *calls to see what's going on. Each gate draws itself, then draws its wire and output
+ *"wires", and then adds the wire and output text fields. 
  */
 
             /**
@@ -45,7 +45,7 @@
                 .attr("y", y+45);
                 
                 
-            gate.input0 = svg.append("path")
+            gate.wire0 = svg.append("path")
                             .attr("d", pp("M",x,y+9)+pp("L",x-10,y+9))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
@@ -57,7 +57,7 @@
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.field0 = d3.select("body").append("input")
+            gate.input0 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+(y+5)+"px;");
                             
@@ -66,18 +66,27 @@
                             .attr("disabled", true)
                             .attr("style", "position: absolute; left: "+(x+58)+"px; top: "+(y+5)+"px;");
                             
-            gate.field0.on("change", function() {
-                if(parseInt(gate.field0.property("value")) == 1) {
-                    gate.input0.attr("stroke", "#090");
-                    logic.not(gate);
+            gate.output.state = function(bool) {
+                if(bool) {
+                    gate.output.attr("stroke", "#090");
+                    gate.fieldOut.property("value", 1);       
+                } else {
+                    gate.output.attr("stroke", "#000");
+                    gate.fieldOut.property("value", 0);
+                }
+            }
+            gate.input0.on("change", function() {
+                if(parseInt(gate.input0.property("value")) == 1) {
+                    gate.wire0.attr("stroke", "#090");
+                    gate.output.state(logic.not(gate));
                     return;
                 }
-                if(parseInt(gate.field0.property("value")) == 0) {
-                    gate.input0.attr("stroke", "#000");
-                    logic.not(gate);
+                if(parseInt(gate.input0.property("value")) == 0) {
+                    gate.wire0.attr("stroke", "#000");
+                    gate.output.state(logic.not(gate));
                     return;
                 }
-                gate.input0.attr("stroke", "#900");
+                gate.wire0.attr("stroke", "#900");
             });
         }
         
@@ -102,13 +111,13 @@
                 .attr("x", x + 5)
                 .attr("y", y+45);
                 
-            gate.input0 = svg.append("path")
+            gate.wire0 = svg.append("path")
                             .attr("d", pp("M",x+5,y+5)+pp("L",x-10,y+5))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.input1 = svg.append("path")
+            gate.wire1 = svg.append("path")
                             .attr("d", pp("M",x+4,y+25)+pp("L",x-10,y+25))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
@@ -120,11 +129,11 @@
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.field0 = d3.select("body").append("input")
+            gate.input0 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+y+"px;");
                             
-            gate.field1 = d3.select("body").append("input")
+            gate.input1 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+(y+20)+"px;");
                             
@@ -133,31 +142,41 @@
                             .attr("disabled", true)
                             .attr("style", "position: absolute; left: "+(x+58)+"px; top: "+(y+10)+"px;");
                             
-            gate.field0.on("change", function() {
-                if(parseInt(gate.field0.property("value")) == 1) {
-                    gate.input0.attr("stroke", "#090");
-                    logic.or(gate);
+            gate.output.state = function(bool) {
+                if(bool) {
+                    gate.output.attr("stroke", "#090");
+                    gate.fieldOut.property("value", 1);       
+                } else {
+                    gate.output.attr("stroke", "#000");
+                    gate.fieldOut.property("value", 0);
+                }
+            }
+                            
+            gate.input0.on("change", function() {
+                if(parseInt(gate.input0.property("value")) == 1) {
+                    gate.wire0.attr("stroke", "#090");
+                    gate.output.state(logic.or(gate));
                     return;
                 }
-                if(parseInt(gate.field0.property("value")) == 0) {
-                    gate.input0.attr("stroke", "#000");
-                    logic.or(gate);
+                if(parseInt(gate.input0.property("value")) == 0) {
+                    gate.wire0.attr("stroke", "#000");
+                    gate.output.state(logic.or(gate));
                     return;
                 }
-                gate.input0.attr("stroke", "#900");
+                gate.wire0.attr("stroke", "#900");
             });
-            gate.field1.on("change", function() {
-                if(parseInt(gate.field1.property("value")) === 1) {
-                    gate.input1.attr("stroke", "#090");
-                    logic.or(gate);
+            gate.input1.on("change", function() {
+                if(parseInt(gate.input1.property("value")) === 1) {
+                    gate.wire1.attr("stroke", "#090");
+                    gate.output.state(logic.or(gate));
                    return;
                 }
-                if(parseInt(gate.field1.property("value")) === 0) {
-                    gate.input1.attr("stroke", "#000");
-                    logic.or(gate);
+                if(parseInt(gate.input1.property("value")) === 0) {
+                    gate.wire1.attr("stroke", "#000");
+                    gate.output.state(logic.or(gate));
                     return;
                 }
-                gate.input1.attr("stroke", "#900");
+                gate.wire1.attr("stroke", "#900");
             });
         }
         
@@ -181,13 +200,13 @@
                 .attr("x", x + 5)
                 .attr("y", y+45);
                 
-            gate.input0 = svg.append("path")
+            gate.wire0 = svg.append("path")
                             .attr("d", pp("M",x,y+5)+pp("L",x-10,y+5))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.input1 = svg.append("path")
+            gate.wire1 = svg.append("path")
                             .attr("d", pp("M",x,y+25)+pp("L",x-10,y+25))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
@@ -199,11 +218,11 @@
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.field0 = d3.select("body").append("input")
+            gate.input0 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+y+"px;");
                             
-            gate.field1 = d3.select("body").append("input")
+            gate.input1 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+(y+20)+"px;");
                             
@@ -212,31 +231,41 @@
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x+58)+"px; top: "+(y+10)+"px;");
                             
-            gate.field0.on("change", function() {
-                if(parseInt(gate.field0.property("value")) == 1) {
-                    gate.input0.attr("stroke", "#090");
-                    logic.and(gate);
+            gate.output.state = function(bool) {
+                if(bool) {
+                    gate.output.attr("stroke", "#090");
+                    gate.fieldOut.property("value", 1);       
+                } else {
+                    gate.output.attr("stroke", "#000");
+                    gate.fieldOut.property("value", 0);
+                }
+            }
+                            
+            gate.input0.on("change", function() {
+                if(parseInt(gate.input0.property("value")) == 1) {
+                    gate.wire0.attr("stroke", "#090");
+                    gate.output.state(logic.and(gate));
                     return;
                 }
-                if(parseInt(gate.field0.property("value")) == 0) {
-                    gate.input0.attr("stroke", "#000");
-                    logic.and(gate);
+                if(parseInt(gate.input0.property("value")) == 0) {
+                    gate.wire0.attr("stroke", "#000");
+                    gate.output.state(logic.and(gate));
                     return;
                 }
-                gate.input0.attr("stroke", "#900");
+                gate.wire0.attr("stroke", "#900");
             });
-            gate.field1.on("change", function() {
-                if(parseInt(gate.field1.property("value")) === 1) {
-                    gate.input1.attr("stroke", "#090");
-                    logic.and(gate);
+            gate.input1.on("change", function() {
+                if(parseInt(gate.input1.property("value")) === 1) {
+                    gate.wire1.attr("stroke", "#090");
+                    gate.output.state(logic.and(gate));
                    return;
                 }
-                if(parseInt(gate.field1.property("value")) === 0) {
-                    gate.input1.attr("stroke", "#000");
-                    logic.and(gate);
+                if(parseInt(gate.input1.property("value")) === 0) {
+                    gate.wire1.attr("stroke", "#000");
+                    gate.output.state(logic.and(gate));
                     return;
                 }
-                gate.input1.attr("stroke", "#900");
+                gate.wire1.attr("stroke", "#900");
             });
         }
         
@@ -270,13 +299,13 @@
                 .attr("x", x + 5)
                 .attr("y", y+45);
                 
-            gate.input0 = svg.append("path")
+            gate.wire0 = svg.append("path")
                             .attr("d", pp("M",x,y+5)+pp("L",x-10,y+5))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.input1 = svg.append("path")
+            gate.wire1 = svg.append("path")
                             .attr("d", pp("M",x,y+25)+pp("L",x-10,y+25))
                             .attr("stroke", "#000")
                             .attr("fill", "none")
@@ -288,11 +317,11 @@
                             .attr("fill", "none")
                             .attr("stroke-width", 3);
                             
-            gate.field0 = d3.select("body").append("input")
+            gate.input0 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+y+"px;");
                             
-            gate.field1 = d3.select("body").append("input")
+            gate.input1 = d3.select("body").append("input")
                             .attr("value", "0")
                             .attr("style", "position: absolute; left: "+(x-20)+"px; top: "+(y+20)+"px;");
                             
@@ -301,30 +330,40 @@
                             .attr("disabled", true)
                             .attr("style", "position: absolute; left: "+(x+60)+"px; top: "+(y+10)+"px;");
                             
-            gate.field0.on("change", function() {
-                if(parseInt(gate.field0.property("value")) == 1) {
-                    gate.input0.attr("stroke", "#090");
-                    logic.nand(gate);
+            gate.output.state = function(bool) {
+                if(bool) {
+                    gate.output.attr("stroke", "#090");
+                    gate.fieldOut.property("value", 1);       
+                } else {
+                    gate.output.attr("stroke", "#000");
+                    gate.fieldOut.property("value", 0);
+                }
+            }
+                            
+            gate.input0.on("change", function() {
+                if(parseInt(gate.input0.property("value")) == 1) {
+                    gate.wire0.attr("stroke", "#090");
+                    gate.output.state(logic.nand(gate));
                     return;
                 }
-                if(parseInt(gate.field0.property("value")) == 0) {
-                    gate.input0.attr("stroke", "#000");
-                    logic.nand(gate);
+                if(parseInt(gate.input0.property("value")) == 0) {
+                    gate.wire0.attr("stroke", "#000");
+                    gate.output.state(logic.nand(gate));
                     return;
                 }
-                gate.input0.attr("stroke", "#900");
+                gate.wire0.attr("stroke", "#900");
             });
-            gate.field1.on("change", function() {
-                if(parseInt(gate.field1.property("value")) === 1) {
-                    gate.input1.attr("stroke", "#090");
-                    logic.nand(gate);
+            gate.input1.on("change", function() {
+                if(parseInt(gate.input1.property("value")) === 1) {
+                    gate.wire1.attr("stroke", "#090");
+                    gate.output.state(logic.nand(gate));
                    return;
                 }
-                if(parseInt(gate.field1.property("value")) === 0) {
-                    gate.input1.attr("stroke", "#000");
-                    logic.nand(gate);
+                if(parseInt(gate.input1.property("value")) === 0) {
+                    gate.wire1.attr("stroke", "#000");
+                    gate.output.state(logic.nand(gate));
                     return;
                 }
-                gate.input1.attr("stroke", "#900");
+                gate.wire1.attr("stroke", "#900");
             });
         }
